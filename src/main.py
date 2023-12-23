@@ -1,9 +1,11 @@
 from el_gamal import ElGamal
+from utils import generate_prime
 
 def main():
-    elgamal = ElGamal()
+    p = generate_prime()
+    elgamal = ElGamal(p)
 
-    msg = "hello "
+    msg = "hi"
     encrypted_msg = elgamal.encrypt(msg)
     decrypted_msg = elgamal.decrypt(encrypted_msg)
 

@@ -1,33 +1,36 @@
 import random
-from utils import message_to_int, encryption_code_to_str
+from typing import Tuple
+from utils import message_to_int, encryption_code_to_str, find_first_generator
+
 
 class ElGamal:
 
-    def __init__(self) -> None:
+    def __init__(self, p: int) -> None:
         """
-        Initialize the object with None public and private keys and generate new keys.
+        Initialize the ElGamal encryption object.
 
-        The alphabet used for encoding and decoding is: (' ', 'a', 'b', 'c', ..., 'z')
+        :param p: The prime number used for encryption.
         """
         self.__public_key = None
         self.__private_key = None
+        self.__p = p
         self._generate_public_and_private_key()
 
-    def encrypt(self, msg: str) -> int:
+    def encrypt(self, msg: str) -> Tuple[int, int]:
         """
-        Encrypts the input message and returns the encrypted code.
+        Encrypt the input message using ElGamal encryption.
 
-        @param msg: The input string message to be encrypted.
-        @return: The integer code representing the encrypted message.
+        :param msg: The input string message to be encrypted.
+        :return: A tuple (c1, c2) representing the encrypted message.
         """
         pass
 
-    def decrypt(self, encryp_msg: int) -> str:
+    def decrypt(self, encryp_msg: Tuple[int, int]) -> str:
         """
-        Decrypts the input code and returns the original message.
+        Decrypt the input code using ElGamal decryption.
 
-        @param encryp_msg: The input integer code to be decrypted.
-        @return: The decrypted string message.
+        :param encryp_msg: A tuple (c1, c2) representing the encrypted message.
+        :return: The decrypted string message.
         """
         pass
 
@@ -35,4 +38,10 @@ class ElGamal:
         """
         Generate and set the public and private keys for ElGamal encryption.
         """
-        pass
+        p = self.__p
+        g = find_first_generator(p)
+        a = random.randint(1, p - 2)
+        g_a = pow(g, a, p)
+
+        self.__public_key = p, g, g_a
+        self.__private_key = a
