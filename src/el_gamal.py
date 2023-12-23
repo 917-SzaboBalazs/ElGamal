@@ -54,7 +54,7 @@ class ElGamal:
 
         return code
 
-    def _message_to_str(self, encryp_msg: int) -> str:
+    def _encryption_code_to_str(self, encryp_msg: int) -> str:
         """
         Convert an integer code to a string message.
 
