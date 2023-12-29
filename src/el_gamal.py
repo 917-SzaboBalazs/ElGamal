@@ -23,7 +23,17 @@ class ElGamal:
         :param msg: The input string message to be encrypted.
         :return: A tuple (c1, c2) representing the encrypted message.
         """
-        pass
+        p, g, g_a = self.__public_key
+        m = message_to_int(msg)
+
+        # Choose a random k such that 1 <= k <= p-2
+        k = random.randint(1, p - 2)
+
+        # Calculate c1 and c2
+        c1 = pow(g, k, p)
+        c2 = (pow(g_a, k, p) * m) % p
+
+        return c1, c2
 
     def decrypt(self, encryp_msg: Tuple[int, int]) -> str:
         """
@@ -32,7 +42,22 @@ class ElGamal:
         :param encryp_msg: A tuple (c1, c2) representing the encrypted message.
         :return: The decrypted string message.
         """
-        pass
+        p = self.__public_key[0]
+        a = self.__private_key
+
+        # Extract c1 and c2 from the encrypted message
+        c1, c2 = encryp_msg
+
+        # Calculate s = (c1^a) mod p
+        s = pow(c1, a, p)
+
+        # Calculate m = (c2 * s^-1) mod p
+        m = (c2 * pow(s, -1, p)) % p
+
+        # Convert the integer message back to a string
+        msg = encryption_code_to_str(m)
+
+        return msg
 
     def _generate_public_and_private_key(self) -> None:
         """
